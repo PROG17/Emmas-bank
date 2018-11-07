@@ -1,9 +1,9 @@
 using System;
 using Xunit;
 
-namespace UnitTestBank
+namespace xUnitTestBank
 {
-    public class BankTestings
+    public class UnitTest1
     {
         [Fact]
         public void Test1()
