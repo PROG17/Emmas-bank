@@ -33,43 +33,43 @@ namespace ALM_Inlamning1.Controllers
         [HttpPost]
         public IActionResult Deposit(int number, int sum) //number, sum
         {
+            var returnedString = _repo.Deposit(number,sum);
 
-            foreach (var item in _repo.Accounts)   //Lägger till pengar i account som angivits
+            if (returnedString == "OK")
             {
-                if (item.AccountId == number)
-                {
-                    item.Money += sum;
-                    return RedirectToAction("Verify", new { number = number }); //För att slippa leta igenom och ta extra tid om den redan är summerad på
-                }
+                return RedirectToAction("Verify", new { number = number });
             }
 
-            TempData["error"] = "Kontot finns inte";
-            return RedirectToAction("Deposit", new { value = 2 });
+            else
+            {
+                TempData["error"] = "Kontot existerar inte";
+                return RedirectToAction("Deposit", new { value = 2 });
+            }
         }
 
         [HttpPost]
         public IActionResult Withdraw(int number, int sum)
         {
-            foreach (var items in _repo.Accounts)
-            {
-                if (items.AccountId == number)
-                {
-                    if (items.Money >= sum) //Om det finns den summan på kontot
-                    {
-                        items.Money -= sum;
-                        return RedirectToAction("Verify", new { number = number }); //För att slippa leta igenom och ta extra tid om den redan är summerad på
-                    }
+            var returnedString = _repo.Withdraw(number, sum);
 
-                    else
-                    {
-                        TempData["error"] = "Du kan inte ta ut mer pengar än det som finns";
-                        return RedirectToAction("Deposit", new {value = 2 });
-                    }
-                }
+            if (returnedString == "OK")
+            {
+                return RedirectToAction("Verify", new { number = number });
             }
 
-            TempData["error"] = "Kontot finns inte";
-            return RedirectToAction("Deposit", new { value = 2});
+            else if (returnedString == "ERROR")
+            {
+                TempData["error"] = "Du kan inte ta ut mer pengar än vad du har";
+                return RedirectToAction("Deposit", new { value = 2 });
+            }
+
+            else if (returnedString == "NO EXISTING")
+            {
+                TempData["error"] = "Kontot finns inte";
+                return RedirectToAction("Deposit", new { value = 2 });
+            }
+
+            return RedirectToAction("Deposit", new { value = 2 });
         }
 
         public IActionResult Verify(int number)

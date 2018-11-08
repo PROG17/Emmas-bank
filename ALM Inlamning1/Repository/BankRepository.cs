@@ -13,7 +13,7 @@ namespace ALM_Inlamning1.Repository
 
         public BankRepository()
         {
-            GetAccounts(); 
+            GetAccounts();
             GetCustomers();
         }
 
@@ -92,6 +92,50 @@ namespace ALM_Inlamning1.Repository
 
 
             return Accounts;
+        }
+
+        public string Withdraw(int number, int sum)
+        {
+            var items = Accounts.Where(x => x.AccountId == number).FirstOrDefault();
+
+            if (items == null)
+            {
+                return "NO EXISTING";
+            }
+
+            if (items.AccountId == number)
+            {
+                if (items.Money >= sum) //Om det finns den summan på kontot
+                {
+                    items.Money -= sum;
+                    return "OK";
+                }
+
+                else
+                {
+                    return "ERROR";
+                }
+            }
+
+            return "NO EXISTING";
+        }
+
+        public string Deposit(int number, int sum)
+        {
+            var item = Accounts.Where(x => x.AccountId == number).FirstOrDefault();   //Lägger till pengar i account som angivits
+
+            if (item == null)
+            {
+                return "NO EXISTING";
+            }
+
+            if (item.AccountId == number)
+            {
+                item.Money += sum;
+                return "OK";
+            }
+
+            return "NO EXISTING";
         }
     }
 }
