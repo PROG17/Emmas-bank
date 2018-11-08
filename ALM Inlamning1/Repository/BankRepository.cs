@@ -8,14 +8,11 @@ namespace ALM_Inlamning1.Repository
 {
     public class BankRepository
     {
-        public List<Customer> Customers { get; set; }
-        public List<Account> Accounts { get; set; }
+        public List<Customer> Customers = new List<Customer>();
+        public List<Account> Accounts = new List<Account>();
 
         public BankRepository()
         {
-            Customers = new List<Customer>();
-            Accounts = new List<Account>();
-
             GetAccounts(); 
             GetCustomers();
         }
