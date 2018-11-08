@@ -5,20 +5,9 @@ using System.Threading.Tasks;
 
 namespace ALM_Inlamning1.Models
 {
-    public class Account : Person
+    public class Account : Customer
     {
         public int AccountId { get; set; }
         public decimal Money { get; set; }
-
-        public Account()
-        {
-        }
-
-        public Account(int id, int personId, decimal money)
-        {
-            AccountId = id;
-            PersonId = personId;
-            Money = money;
-        }
     }
 }
