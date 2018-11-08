@@ -43,7 +43,8 @@ namespace ALM_Inlamning1.Controllers
                 }
             }
 
-            return View(customerList);
+            TempData["error"] = "Kontot finns inte";
+            return RedirectToAction("Deposit", new { value = 2 });
         }
 
         [HttpPost]
@@ -66,7 +67,9 @@ namespace ALM_Inlamning1.Controllers
                     }
                 }
             }
-            return RedirectToAction("Deposit");
+
+            TempData["error"] = "Kontot finns inte";
+            return RedirectToAction("Deposit", new { value = 2});
         }
 
         public IActionResult Verify(int number)
