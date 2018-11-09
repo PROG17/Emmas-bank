@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<ALM_Inlamning1.Models.Customer>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -8,8 +10,19 @@
 
 <div class="row">
 
-    <div class="col-md-3">
-        <h2>Overview</h2>
+    <div class="col-md-7">
+        <h2>Accounts</h2>
+
+        @foreach (var values in Model)
+        {
+            <h5><b>@values.Name @values.LastName</b>  har kundnummer: @values.PersonId </h5>
+            @foreach (var item in values.Account)
+            {
+                <h5>Saldo på konto nummer @item.AccountId är @item.Money:-</h5>
+            }
+            <hr/>
+        }      
+
     </div>
     <div class="col-md-3">
         <h2>Run &amp; Deploy</h2>

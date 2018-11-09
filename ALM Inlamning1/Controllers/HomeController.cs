@@ -5,14 +5,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ALM_Inlamning1.Models;
+using ALM_Inlamning1.Repository;
 
 namespace ALM_Inlamning1.Controllers
 {
     public class HomeController : Controller
     {
+       private readonly BankRepository _repo;
+
+        public HomeController(BankRepository repo)
+        {
+            _repo = repo;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            List<Customer> customerList = _repo.Customers;
+
+
+            return View(customerList);
         }
 
         public IActionResult About()
@@ -21,40 +32,6 @@ namespace ALM_Inlamning1.Controllers
 
             return View();
         }
-
-        public List<Person> Peoples()
-        {
-            List<Person> persons = new List<Person>();
-
-            var person = new Person
-            {
-                PersonId = 1,
-                Name = "Emma",
-                LastName = "Flensson"
-            };
-            persons.Add(person);
-
-            person = new Person
-            {
-                PersonId = 2,
-                Name = "Jesper",
-                LastName = "Grusan"
-            };
-
-            persons.Add(person);
-
-            person = new Person
-            {
-                PersonId = 3,
-                Name = "Luna",
-                LastName = "Vestin"
-            };
-
-            persons.Add(person);
-
-            return persons;
-        }
-
 
 
         public IActionResult Contact()
