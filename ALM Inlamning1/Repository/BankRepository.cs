@@ -101,7 +101,7 @@ namespace ALM_Inlamning1.Repository
 
             if (check == false)
             {
-                var replaceDecimal = sum.Replace(".", ",");
+                var replaceDecimal = sum.Replace(",", ".");
 
                 var newSum = Convert.ToDecimal(replaceDecimal);
 
@@ -141,7 +141,7 @@ namespace ALM_Inlamning1.Repository
 
             if (check == false)
             {
-                var replaceDecimal = sum.ToString().Replace(".", ",");
+                var replaceDecimal = sum.ToString().Replace(",", ".");
 
                 var newSum = Convert.ToDecimal(replaceDecimal);
 
