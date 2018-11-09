@@ -1,6 +1,7 @@
 ﻿using ALM_Inlamning1.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -99,12 +100,14 @@ namespace ALM_Inlamning1.Repository
         {
             var check = Regex.IsMatch(sum.ToString(), @"[a-zA-Z]");
 
+            if (sum.Contains(",") || sum.Contains("."))
+            {
+                check = true;
+            }
+
+
             if (check == false)
             {
-                var replaceDecimal = sum.Replace(",", ".");
-
-                var newSum = Convert.ToDecimal(replaceDecimal);
-
                 var items = Accounts.Where(x => x.AccountId == number).FirstOrDefault();
 
                 if (items == null)
@@ -114,9 +117,9 @@ namespace ALM_Inlamning1.Repository
 
                 if (items.AccountId == number)
                 {
-                    if (items.Money >= newSum) //Om det finns den summan på kontot
+                    if (items.Money >= Convert.ToDecimal(sum)) //Om det finns den summan på kontot
                     {
-                        items.Money -= newSum;
+                        items.Money -= Convert.ToDecimal(sum);
                         return "OK";
                     }
 
@@ -139,12 +142,10 @@ namespace ALM_Inlamning1.Repository
         {
             var check = Regex.IsMatch(sum, @"[a-zA-Z]");
 
+            if (sum.Contains(",") || sum.Contains(".")) check = true;
+
             if (check == false)
             {
-                var replaceDecimal = sum.ToString().Replace(",", ".");
-
-                var newSum = Convert.ToDecimal(replaceDecimal);
-
                 var item = Accounts.Where(x => x.AccountId == number).FirstOrDefault();   //Lägger till pengar i account som angivits
 
                 if (item == null)
@@ -154,7 +155,7 @@ namespace ALM_Inlamning1.Repository
 
                 if (item.AccountId == number)
                 {
-                    item.Money += newSum;
+                    item.Money += Convert.ToDecimal(sum);
                     return "OK";
                 }
 
