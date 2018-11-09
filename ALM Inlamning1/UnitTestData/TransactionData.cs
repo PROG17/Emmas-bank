@@ -9,38 +9,32 @@ namespace ALM_Inlamning1.UnitTestData
     public class TransactionData
     {
 
-        public bool WithdrawAmount(int number, int amount) //Inte kunna ta ut mer än det som finns
+        public string WithdrawAmount(int number, int amount) //Inte kunna ta ut mer än det som finns
         {
             var listOfAccounts = GetAccounts().Where(x => x.AccountId == number).FirstOrDefault();
 
-            if (listOfAccounts.Money >= amount)
+            if (listOfAccounts.Money >= amount) //Om beloppet finns
             {
                 listOfAccounts.Money = listOfAccounts.Money - amount;
+
+                return listOfAccounts.Money.ToString();
             }
 
-            if (listOfAccounts.Money == 4500 - amount)
-            {
-                return true;
-            }
-
-            return false;
+            return "wrongAnswer";
         }
 
-        public bool DepositMoney(int number, int amount) //Lägger in pengar
+        public string DepositMoney(int number, int amount) //Lägger in pengar
         {
             var listOfAccounts = GetAccounts().Where(x => x.AccountId == number).FirstOrDefault();
 
             if (amount > 0)
             {
                 listOfAccounts.Money = listOfAccounts.Money + amount;
+
+                return listOfAccounts.Money.ToString();
             }
 
-            if (listOfAccounts.Money == 4500 + amount)
-            {
-                return true;
-            }
-
-            return false;
+            return "wrongAnswer";
         }
 
         public List<Account> GetAccounts()

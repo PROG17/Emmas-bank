@@ -31,24 +31,26 @@ namespace ALM_Inlamning1.Controllers
         }
 
         [HttpPost]
-        public IActionResult Deposit(int number, int sum) //number, sum
+        public IActionResult Deposit(int number, string sum) //number, sum
         {
-            var returnedString = _repo.Deposit(number,sum);
+            var returnedString = _repo.Deposit(number, sum);
 
             if (returnedString == "OK")
             {
                 return RedirectToAction("Verify", new { number = number });
             }
 
-            else
+            else if (returnedString == "NO EXISTING")
             {
                 TempData["error"] = "Kontot existerar inte";
                 return RedirectToAction("Deposit", new { value = 2 });
             }
+
+            else TempData["error"] = "Felaktigt inmatning"; return RedirectToAction("Deposit", new { value = 2 });
         }
 
         [HttpPost]
-        public IActionResult Withdraw(int number, int sum)
+        public IActionResult Withdraw(int number, string sum)
         {
             var returnedString = _repo.Withdraw(number, sum);
 
@@ -69,7 +71,7 @@ namespace ALM_Inlamning1.Controllers
                 return RedirectToAction("Deposit", new { value = 2 });
             }
 
-            return RedirectToAction("Deposit", new { value = 2 });
+            else TempData["error"] = "Felaktigt inmatning"; return RedirectToAction("Deposit", new { value = 2 });
         }
 
         public IActionResult Verify(int number)

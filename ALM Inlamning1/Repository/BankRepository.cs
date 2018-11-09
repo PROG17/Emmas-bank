@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ALM_Inlamning1.Repository
@@ -94,48 +95,73 @@ namespace ALM_Inlamning1.Repository
             return Accounts;
         }
 
-        public string Withdraw(int number, int sum)
+        public string Withdraw(int number, string sum)
         {
-            var items = Accounts.Where(x => x.AccountId == number).FirstOrDefault();
+            var check = Regex.IsMatch(sum.ToString(), @"[a-zA-Z]");
 
-            if (items == null)
+            if (check == false)
             {
-                return "NO EXISTING";
+                var replaceDecimal = sum.Replace(".", ",");
+
+                var newSum = Convert.ToDecimal(replaceDecimal);
+
+                var items = Accounts.Where(x => x.AccountId == number).FirstOrDefault();
+
+                if (items == null)
+                {
+                    return "NO EXISTING";
+                }
+
+                if (items.AccountId == number)
+                {
+                    if (items.Money >= newSum) //Om det finns den summan på kontot
+                    {
+                        items.Money -= newSum;
+                        return "OK";
+                    }
+
+                    else
+                    {
+                        return "ERROR";
+                    }
+                }
             }
 
-            if (items.AccountId == number)
+            else
             {
-                if (items.Money >= sum) //Om det finns den summan på kontot
-                {
-                    items.Money -= sum;
-                    return "OK";
-                }
-
-                else
-                {
-                    return "ERROR";
-                }
+                return "WRONG INPUT";
             }
 
             return "NO EXISTING";
         }
 
-        public string Deposit(int number, int sum)
+        public string Deposit(int number, string sum)
         {
-            var item = Accounts.Where(x => x.AccountId == number).FirstOrDefault();   //Lägger till pengar i account som angivits
+            var check = Regex.IsMatch(sum, @"[a-zA-Z]");
 
-            if (item == null)
+            if (check == false)
             {
+                var replaceDecimal = sum.ToString().Replace(".", ",");
+
+                var newSum = Convert.ToDecimal(replaceDecimal);
+
+                var item = Accounts.Where(x => x.AccountId == number).FirstOrDefault();   //Lägger till pengar i account som angivits
+
+                if (item == null)
+                {
+                    return "NO EXISTING";
+                }
+
+                if (item.AccountId == number)
+                {
+                    item.Money += newSum;
+                    return "OK";
+                }
+
                 return "NO EXISTING";
             }
 
-            if (item.AccountId == number)
-            {
-                item.Money += sum;
-                return "OK";
-            }
-
-            return "NO EXISTING";
+            else return "WRONG INPUT";
         }
     }
 }

@@ -12,7 +12,7 @@ namespace ALM_Inlamning1.Models
         public int AccountId { get; set; }
 
         [Required]
-        [Range(0, Int32.MaxValue)]
+        [Range(0, float.MaxValue, ErrorMessage = "Du kan bara skriva in siffror")]
         public decimal Money { get; set; }
     }
 }
