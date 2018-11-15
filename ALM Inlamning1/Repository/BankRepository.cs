@@ -164,5 +164,56 @@ namespace ALM_Inlamning1.Repository
 
             else return "WRONG INPUT";
         }
+
+        public string Transfer(int fromNumber, int toNumber, string sum)
+        {
+            bool check;
+
+            if (sum == null)
+            {
+                check = true;
+            }
+            else
+            {
+                check = Regex.IsMatch(sum.ToString(), @"[a-zA-Z]");
+                if (sum.Contains(",") || sum.Contains(".")) check = true;
+            }            
+
+            if (check == false)
+            {
+                Account fromAccount  = Accounts.Where(x => x.AccountId == fromNumber).FirstOrDefault();
+                if (fromAccount == null)
+                {
+                    return "FROMACCOUNT NOT EXISTING";
+                }
+
+                Account toAccount = Accounts.Where(x => x.AccountId == toNumber).FirstOrDefault();
+                if (toAccount == null)
+                {
+                    return "TOACCOUNT NOT EXISTING";
+                }
+
+                if (fromNumber == toNumber)
+                {
+                    return "FROMACCOUNT SAME AS TOACCOUNT";
+                }
+
+                if (fromAccount.Money >= Convert.ToDecimal(sum)) //Om summan finns på från-kontot                {
+                { 
+                    fromAccount.Withdrawal(Convert.ToDecimal(sum));
+                    toAccount.Deposit(Convert.ToDecimal(sum));
+                    return "OK";
+                }
+                else
+                {
+                    return "OVERDRAW ERROR";
+                }
+            }
+            else
+            {
+                return "WRONG INPUT";
+            }
+        }        
+
     }
 }
